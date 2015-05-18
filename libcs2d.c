@@ -1,5 +1,6 @@
 #include "libcs2d.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
@@ -26,6 +27,40 @@ void cs2d_request_ips(int socket_descriptor){
 
     char iprequest[] = {0x01, 0x00, 0x14, 0x01};
     sendto(socket_descriptor, iprequest, 4, 0, (struct sockaddr *)&server, sizeof(server));
+}
+
+struct sockaddr_in *cs2d_get_servers(){
+    int sock_desc = socket(AF_INET, SOCK_DGRAM, 0);
+    cs2d_bind_socket(sock_desc);
+    cs2d_request_ips(sock_desc);
+
+    unsigned char response[1024];
+    recvfrom(sock_desc, response, 1024, 0, NULL, NULL);
+    int ips = response[3];
+
+    struct sockaddr_in *servers = malloc(sizeof(struct sockaddr_in)*(ips+1));
+
+    struct sockaddr_in length;
+    length.sin_port = ips;
+    servers[0] = length;
+
+    int loc = 5;
+    for (int i=0;i<ips;i++){
+        char ip[500];
+        sprintf(ip, "%d.%d.%d.%d", response[loc+3], response[loc+2], response[loc+1], response[loc]);
+        int port = response[loc+4] | response[loc+5] << 8;
+
+        struct sockaddr_in server;
+        server.sin_family = AF_INET;
+        server.sin_port = htons(port);
+        server.sin_addr.s_addr = inet_addr(ip);
+
+        servers[i+1] = server;
+
+        loc += 6;
+    }
+
+    return servers;
 }
 
 struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
