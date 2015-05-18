@@ -10,7 +10,7 @@ int main() {
     for (int i=1;i<=ips;i++){
         struct cs2dServer *server = cs2d_get_serverinfo(servers[i]);
         if (server != NULL){
-            printf("%s\n", server->name);
+            printf("Got response: %s | %s [%d/%d]\n", server->name, server->mapName, server->players, server->maxPlayers);
         }
         free(server);
     }
