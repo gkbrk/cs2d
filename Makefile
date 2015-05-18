@@ -1,5 +1,6 @@
 compile:
-	clang -o get_servers get_servers.c
+	clang -o libcs2d.o -c libcs2d.c
+	clang -o get_servers get_servers.c libcs2d.o
 
 run:
 	make compile
@@ -7,6 +8,8 @@ run:
 
 clean:
 	rm get_servers
+	rm libcs2d.o
+	rm libcs2d.a
 
 test:
 	make compile
