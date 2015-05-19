@@ -5,8 +5,8 @@
 #define CS2D_TIMEOUT 100
 
 struct cs2dServer{
-    char name[100];
-    char mapName[100];
+    char name[255];
+    char mapName[255];
     int players;
     int maxPlayers;
 };
