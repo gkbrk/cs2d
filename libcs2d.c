@@ -85,22 +85,20 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
 
         int name_len = response[loc];
         loc++;
-        strncpy(sv->name, &response[loc], name_len);
+        memcpy(sv->name, &response[loc], 255);
         sv->name[name_len] = '\0';
         loc += name_len;
 
         int map_len = response[loc];
         loc++;
-        strncpy(sv->mapName, &response[loc], map_len);
+        memcpy(sv->mapName, &response[loc], 255);
         sv->mapName[map_len] = '\0';
         loc += map_len;
 
         sv->players = response[loc];
         loc++;
         sv->maxPlayers = response[loc];
-
-        char ip_text[500];
-        inet_ntop(AF_INET, &(server.sin_addr), ip_text, 500);
+        
         return sv;
     }else{
 
