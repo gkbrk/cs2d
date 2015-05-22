@@ -36,8 +36,9 @@ struct sockaddr_in *cs2d_get_servers(){
 
     unsigned char response[1024];
     recvfrom(sock_desc, response, 1024, 0, NULL, NULL);
-    int ips = response[3];
+    close(sock_desc);
 
+    int ips = response[3];
     struct sockaddr_in *servers = malloc(sizeof(struct sockaddr_in)*(ips+1));
 
     struct sockaddr_in length;
@@ -79,6 +80,8 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
 
     char response[1024];
     int length = recvfrom(sock_desc, response, 1023, 0, NULL, NULL);
+    close(sock_desc);
+
     int loc = 5;
     if (length > 0){
         struct cs2dServer *sv = malloc(sizeof(struct cs2dServer));
