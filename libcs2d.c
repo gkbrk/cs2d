@@ -30,7 +30,7 @@ void cs2d_request_ips(int socket_descriptor){
     sendto(socket_descriptor, iprequest, 4, 0, (struct sockaddr *)&server, sizeof(server));
 }
 
-struct sockaddr_in *cs2d_get_servers(){
+int cs2d_get_servers(struct sockaddr_in **servers){
     int sock_desc = socket(AF_INET, SOCK_DGRAM, 0);
     cs2d_bind_socket(sock_desc);
     cs2d_request_ips(sock_desc);
@@ -40,11 +40,7 @@ struct sockaddr_in *cs2d_get_servers(){
     close(sock_desc);
 
     int ips = response[3];
-    struct sockaddr_in *servers = malloc(sizeof(struct sockaddr_in)*(ips+1));
-
-    struct sockaddr_in length;
-    length.sin_port = ips;
-    servers[0] = length;
+    *servers = malloc(sizeof(struct sockaddr_in)*ips);
 
     int loc = 5;
     for (int i=0;i<ips;i++){
@@ -57,12 +53,12 @@ struct sockaddr_in *cs2d_get_servers(){
         server.sin_port = htons(port);
         server.sin_addr.s_addr = inet_addr(ip);
 
-        servers[i+1] = server;
+        (*servers)[i] = server;
 
         loc += 6;
     }
 
-    return servers;
+    return ips;
 }
 
 struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
