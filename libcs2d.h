@@ -2,7 +2,7 @@
 
 #include <arpa/inet.h>
 
-#define CS2D_TIMEOUT 250
+#define CS2D_TIMEOUT 500
 
 struct cs2dServer{
     char name[256];
