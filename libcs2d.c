@@ -127,14 +127,12 @@ int cs2d_get_players(struct sockaddr_in server, char ***players){
 
     if (length > 0){
         int player_count = response[4];
-        printf("%d players\n", player_count);
         *players = malloc(sizeof(void*) * player_count);
 
         int pos = 5;
         for (int i=0;i<player_count;i++){ 
             pos++;
             int name_len = response[pos];
-            printf("%d\n", name_len);
             pos++;
 
             char *name = malloc(256);
