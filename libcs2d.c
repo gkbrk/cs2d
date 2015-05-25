@@ -98,11 +98,55 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
         sv->players = response[loc];
         loc++;
         sv->maxPlayers = response[loc];
-        
+
         sv->address = server;
         return sv;
     }else{
 
         return NULL;
+    }
+}
+
+int cs2d_get_players(struct sockaddr_in server, char ***players){
+    int sock_desc = socket(AF_INET, SOCK_DGRAM, 0);
+    cs2d_bind_socket(sock_desc);
+
+    struct timeval timeout;
+    timeout.tv_sec = 0;
+    timeout.tv_usec = CS2D_TIMEOUT*1000;
+
+    setsockopt(sock_desc, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
+    setsockopt(sock_desc, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+
+    char datarequest[] = {0x01, 0x00, 0xfb, 0x05};
+    sendto(sock_desc, datarequest, 4, 0, (struct sockaddr *)&server, sizeof(server));
+
+    char response[4096];
+    int length = recvfrom(sock_desc, response, 4095, 0, NULL, NULL);
+    close(sock_desc);
+
+    if (length > 0){
+        int player_count = response[4];
+        printf("%d players\n", player_count);
+        *players = malloc(sizeof(void*) * player_count);
+
+        int pos = 5;
+        for (int i=0;i<player_count;i++){ 
+            pos++;
+            int name_len = response[pos];
+            printf("%d\n", name_len);
+            pos++;
+
+            char *name = malloc(256);
+            memcpy(name, &response[pos], 255);
+            name[name_len] = '\0';
+            pos += name_len;
+            (*players)[i] = name;
+
+            pos += 9;
+        }
+        return player_count;
+    }else{
+        return 0;
     }
 }
