@@ -10,6 +10,7 @@ struct cs2dServer{
     int players;
     int maxPlayers;
     int bots;
+    char fogOfWar;
     struct sockaddr_in address;
 };
 

@@ -99,8 +99,12 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
         loc++;
         sv->maxPlayers = response[loc];
         
-        loc += 2;
-        sv->bots = response[loc];
+        loc++;
+        sv->fogOfWar = (response[loc] >> 3) & 1;
+
+        for (int i=0;i<8;i++){
+            //printf("Flag %d: %d ", i, (response[loc] >> i) & 1);
+        }
 
         sv->address = server;
         return sv;
