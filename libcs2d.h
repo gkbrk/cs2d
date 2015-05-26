@@ -9,6 +9,7 @@ struct cs2dServer{
     char mapName[256];
     int players;
     int maxPlayers;
+    int bots;
     struct sockaddr_in address;
 };
 

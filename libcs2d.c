@@ -98,6 +98,9 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
         sv->players = response[loc];
         loc++;
         sv->maxPlayers = response[loc];
+        
+        loc += 2;
+        sv->bots = response[loc];
 
         sv->address = server;
         return sv;
