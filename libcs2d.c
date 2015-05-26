@@ -152,6 +152,7 @@ int cs2d_get_players(struct sockaddr_in server, char ***players){
         }
         return player_count;
     }else{
+        *players = NULL;
         return 0;
     }
 }
