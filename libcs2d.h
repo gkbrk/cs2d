@@ -11,6 +11,9 @@ struct cs2dServer{
     int maxPlayers;
     int bots;
     char fogOfWar;
+    char luaScripts;
+    char friendlyFire;
+    char passwordProtected;
     struct sockaddr_in address;
 };
 
