@@ -104,15 +104,18 @@ struct cs2dServer *cs2d_get_serverinfo(struct sockaddr_in server){
         char flags[8];
         for (int i=0;i<8;i++){
             flags[i] = (response[4] >> i) & 1;
-            printf("Flag %d: %d ", i, (response[4] >> i) & 1);
+            //printf("Flag %d: %d ", i, (response[4] >> i) & 1);
         }
 
         sv->luaScripts = flags[6];
         sv->fogOfWar = flags[2];
         sv->friendlyFire = flags[3];
 
+        sv->gamemode = response[loc];
+        loc++;
+
         if (flags[5]){
-            sv->bots = response[loc+1];
+            sv->bots = response[loc];
         }else{
             sv->bots = 0;
         }

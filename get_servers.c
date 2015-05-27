@@ -21,6 +21,10 @@ int main() {
                 printf("%s: Fog of war enabled\n", server->name);
             }
 
+            if (server->gamemode == CONSTRUCTION){
+                printf("Construction server found! %s\n", server->name);
+            }
+
             char **players;
             int num_players = cs2d_get_players(server->address, &players);
             for (int i=0;i<num_players;i++){

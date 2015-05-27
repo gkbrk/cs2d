@@ -4,6 +4,8 @@
 
 #define CS2D_TIMEOUT 500
 
+typedef enum {STANDARD, DEATHMATCH, TEAMDEATHMATCH, CONSTRUCTION} cs2dGamemode;
+
 struct cs2dServer{
     char name[256];
     char mapName[256];
@@ -14,6 +16,7 @@ struct cs2dServer{
     char luaScripts;
     char friendlyFire;
     char passwordProtected;
+    cs2dGamemode gamemode;
     struct sockaddr_in address;
 };
 
