@@ -52,5 +52,7 @@ int main(int argc, char *argv[]) {
         free(server);
     }
     free(servers);
-    printf("</servers>\n");
+    if (argc > 1 && strcmp(argv[1], "xml") == 0){
+        printf("</servers>\n");
+    }
 }
