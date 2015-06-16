@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     int ips = cs2d_get_servers(&servers);
 
     if (argc > 1 && strcmp(argv[1], "xml") == 0){
-        printf("<?xml version=\"1.0\"?>\n");
+        printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         printf("<servers>\n");
     }
 
