@@ -45,8 +45,8 @@ int main(int argc, char *argv[]) {
             }else if (argc > 1 && strcmp(argv[1], "libxml") == 0){
                 char buffer[255];
                 xmlNodePtr serverNode = xmlNewChild(root_node, NULL, BAD_CAST "server", NULL);
-                xmlNewChild(serverNode, NULL, BAD_CAST "name", BAD_CAST server->name);
-                xmlNewChild(serverNode, NULL, BAD_CAST "mapName", BAD_CAST server->mapName);
+                xmlNewTextChild(serverNode, NULL, BAD_CAST "name", BAD_CAST server->name);
+                xmlNewTextChild(serverNode, NULL, BAD_CAST "mapName", BAD_CAST server->mapName);
 
                 sprintf(buffer, "%d", server->players);
                 xmlNewChild(serverNode, NULL, BAD_CAST "playerCount", BAD_CAST buffer);
@@ -61,8 +61,10 @@ int main(int argc, char *argv[]) {
                 char **players;
                 int playerCount = cs2d_get_players(server->address, &players);
                 for (int i=0;i<playerCount;i++){
-                    xmlNewChild(playersNode, NULL, BAD_CAST "player", BAD_CAST players[i]);
+                    xmlNewTextChild(playersNode, NULL, BAD_CAST "player", BAD_CAST players[i]);
+                    free(players[i]);
                 }
+                free(players);
             }else{
                 if (server->bots > 0){
                     printf("%s | %s [%d/%d] (%d bots)\n", server->name, server->mapName, server->players, server->maxPlayers, server->bots);
@@ -89,5 +91,10 @@ int main(int argc, char *argv[]) {
         int buffersize;
         xmlDocDumpMemory(doc, &xmlbuff, &buffersize);
         printf("%s", (char *)xmlbuff);
+
+        //Free libxml2 resources
+        xmlFree(xmlbuff);
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
     }
 }
