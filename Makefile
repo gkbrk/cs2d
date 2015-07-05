@@ -6,7 +6,7 @@ run:
 	./get_servers
 
 clean:
-	rm get_servers
+	rm -f get_servers
 
 test:
 	make compile
