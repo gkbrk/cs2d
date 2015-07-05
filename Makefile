@@ -1,5 +1,5 @@
 compile:
-	clang -o get_servers get_servers.c libcs2d.c
+	clang -o get_servers `xml2-config --cflags` -lxml2 get_servers.c libcs2d.c
 
 run:
 	make compile
