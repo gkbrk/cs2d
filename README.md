@@ -1,7 +1,7 @@
-#cs2d/libcs2d#
+# cs2d/libcs2d
 A C program to get the CS2D Serverlist from the USGN serverlist and ping all of them to get server data.
 
-#Compiling#
+# Compiling
 There are multiple ways to compile libcs2d.
 
 1. Running `make` or `make compile` will compile the code and leave an executable called _get\_servers_.
